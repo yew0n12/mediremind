@@ -8,8 +8,8 @@ import androidx.room.Query
 @Dao
 interface TodoDao{
     //get ALl
-    @Query("SELECT * FROM TODOENTITY")
-    fun getAllTodo() : List<TodoEntity>
+    @Query("SELECT * FROM TODOENTITY ORDER BY importance ASC")
+    fun getAllTodo(): List<TodoEntity>
 
     // insert todo
     @Insert

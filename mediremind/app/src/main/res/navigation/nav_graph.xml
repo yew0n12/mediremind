@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mediremind.HomeFragment"
+        android:label="홈" />
+
+    <fragment
+        android:id="@+id/medicationFragment"
+        android:name="com.example.mediremind.PlaceholderFragment"
+        android:label="약 복용" />
+
+    <fragment
+        android:id="@+id/habitFragment"
+        android:name="com.example.mediremind.PlaceholderFragment"
+        android:label="건강 습관" />
+</navigation>
