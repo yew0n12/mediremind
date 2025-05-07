@@ -11,11 +11,11 @@
 
     <fragment
         android:id="@+id/medicationFragment"
-        android:name="com.example.mediremind.PlaceholderFragment"
+        android:name="com.example.mediremind.MedicationFragment"
         android:label="약 복용" />
 
     <fragment
         android:id="@+id/habitFragment"
-        android:name="com.example.mediremind.PlaceholderFragment"
+        android:name="com.example.mediremind.HabitFragment"
         android:label="건강 습관" />
 </navigation>
