@@ -2,7 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+
 
     <fragment
         android:id="@+id/homeFragment"
@@ -18,4 +22,5 @@
         android:id="@+id/habitFragment"
         android:name="com.example.mediremind.HabitFragment"
         android:label="건강 습관" />
+
 </navigation>
