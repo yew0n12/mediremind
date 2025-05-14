@@ -16,6 +16,8 @@ import android.util.Log
 import java.util.Date
 
 import com.example.mediremind.R
+import com.example.mediremind.data.AlarmLog
+import com.example.mediremind.data.AppDatabase
 
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -25,6 +27,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
 
         if (context == null) return
+
 
         // 알림 채널 ID (MainActivity 또는 Application에서 미리 생성해 둬야 함)
         val channelId = "mediremind"
@@ -56,6 +59,11 @@ class AlarmReceiver : BroadcastReceiver() {
             // Android 13 미만은 그냥 실행
             notificationManager.notify(1001, builder.build())
         }
+        val log = AlarmLog(name = medName, desc = medDesc, timestamp = System.currentTimeMillis(), taken = false )
+        Thread {
+            val db = AppDatabase.getInstance(context)
+            db.alarmLogDao().insert(log)
+        }.start()
     }
 
 }

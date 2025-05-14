@@ -12,11 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.mediremind.data.AppDatabase
+import com.example.mediremind.data.Medication
 import com.example.mediremind.databinding.FragmentMedicationBinding
-import com.google.android.material.datepicker.DateValidatorPointBackward.before
 import java.util.Calendar
-// 패키지 데이터 클래스
-data class Medication(var name: String, var description: String, var schedule: String)
+
 
 class MedicationFragment : Fragment() {
 
@@ -37,6 +37,7 @@ class MedicationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadMedications()
         adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, getDisplayList())
         binding.listMedications.adapter = adapter
 
@@ -55,6 +56,12 @@ class MedicationFragment : Fragment() {
                 .setMessage("‘${med.name}’ 을(를) 삭제할까요?")
                 .setPositiveButton("삭제") { _, _ ->
                     medications.removeAt(position)
+
+                    Thread {
+                        val db = AppDatabase.getInstance(requireContext())
+                        db.medicationDao().delete(med)
+                    }.start()
+
                     cancelAlarm(med.name)
                     refreshList()
                 }
@@ -62,6 +69,11 @@ class MedicationFragment : Fragment() {
                 .show()
             true
         }
+    }
+    //사라지는 거 방지
+    override fun onResume() {
+        super.onResume()
+        loadMedications()
     }
 
     private fun getDisplayList(): List<String> {
@@ -74,10 +86,20 @@ class MedicationFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
+    private fun loadMedications() {
+        Thread {
+            val db = AppDatabase.getInstance(requireContext())
+            val data = db.medicationDao().getAll()
+            medications.clear()
+            medications.addAll(data)
+            requireActivity().runOnUiThread {
+                refreshList()
+            }
+        }.start()
+    }
+
     private fun showMedicationDialog(position: Int? = null) {
-
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_medication, null)
-
         val editName = dialogView.findViewById<EditText>(R.id.edit_med_name)
         val editDesc = dialogView.findViewById<EditText>(R.id.edit_med_desc)
         val editSchedule = dialogView.findViewById<EditText>(R.id.edit_schedule)
@@ -96,24 +118,31 @@ class MedicationFragment : Fragment() {
                 val name = editName.text.toString()
                 val desc = editDesc.text.toString()
                 val schedule = editSchedule.text.toString()
-                Log.d("AlarmDebug", "setPositiveButton 클릭됨, schedule=$schedule")
-                Log.d("AlarmDebug", "입력된 schedule = $schedule")
 
                 if (name.isNotBlank()) {
                     if (position == null) {
-                        medications.add(Medication(name, desc, schedule))
+                        val newMed = Medication(name = name, description = desc, schedule = schedule)
+                        medications.add(newMed)
+                        Thread {
+                            val db = AppDatabase.getInstance(requireContext())
+                            db.medicationDao().insert(newMed)
+                        }.start()
                     } else {
-                        medications[position] = Medication(name, desc, schedule)
+                        val updated = medications[position].copy(name = name, description = desc, schedule = schedule)
+                        medications[position] = updated
+                        Thread {
+                            val db = AppDatabase.getInstance(requireContext())
+                            db.medicationDao().update(updated)
+                        }.start()
                     }
+
                     refreshList()
 
                     val time = parseHourMinute(schedule)
                     if (time != null) {
                         setAlarm(time.first, time.second, name, desc)
-                        Log.d("AlarmDebug", "setAlarm() 호출됨: ${time.first}:${time.second}")
                         Toast.makeText(requireContext(), "알람이 설정되었습니다", Toast.LENGTH_SHORT).show()
                     } else {
-                        Log.d("AlarmDebug", "시간 파싱 실패로 알람 설정 안 됨: 입력=$schedule")
                         Toast.makeText(requireContext(), "시간 형식이 잘못됐습니다 (예: 08:30)", Toast.LENGTH_SHORT).show()
                     }
 
@@ -131,15 +160,12 @@ class MedicationFragment : Fragment() {
     }
 
     private fun parseHourMinute(schedule: String): Pair<Int, Int>? {
-        Log.d("AlarmDebug", "parseHourMinute() 호출됨, 입력값: $schedule")
         return try {
             val parts = schedule.split(":")
             val hour = parts[0].toInt()
             val minute = parts[1].toInt()
-            Log.d("AlarmDebug", "시간 파싱 성공: $hour:$minute")
             hour to minute
         } catch (e: Exception) {
-            Log.e("AlarmDebug", "시간 파싱 실패: $schedule", e)
             null
         }
     }
@@ -150,13 +176,10 @@ class MedicationFragment : Fragment() {
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-
             if (before(Calendar.getInstance())) {
                 add(Calendar.DAY_OF_MONTH, 1)
             }
         }
-
-        Log.d("AlarmDebug", "알람 설정 시각: ${calendar.time}")
 
         val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
             putExtra("medName", name)
@@ -171,9 +194,10 @@ class MedicationFragment : Fragment() {
         )
 
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExactAndAllowWhileIdle(
+        alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
     }
@@ -188,9 +212,6 @@ class MedicationFragment : Fragment() {
         )
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
-
-        Log.d("AlarmCancel", "알람 취소됨: $name (${name.hashCode()})")
         Toast.makeText(requireContext(), "알람이 취소되었습니다", Toast.LENGTH_SHORT).show()
     }
-
 }
