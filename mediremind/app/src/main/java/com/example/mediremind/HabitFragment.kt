@@ -24,3 +24,4 @@ class HabitFragment : Fragment() {
         _binding = null
     }
 }
+
