@@ -56,10 +56,18 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     val room_version = "2.6.1"
-
+    // Room 기본 런타임
     implementation("androidx.room:room-runtime:$room_version")
+    // Room 코루틴(suspend) 지원
+    implementation("androidx.room:room-ktx:$room_version")
+    // Room 컴파일러 (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // 코루틴 Android 지원
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
 
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
-    ksp("androidx.room:room-compiler:$room_version")
+
 }

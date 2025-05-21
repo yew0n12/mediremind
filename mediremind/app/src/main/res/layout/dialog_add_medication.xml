@@ -32,14 +32,39 @@
         android:layout_marginTop="16dp" />
 
     <EditText
-        android:id="@+id/edit_schedule"
-        android:hint="복용 시간 (예: 아침 9시)"
+        android:id="@+id/edit_start_date"
+        android:hint="복용 시작 기간 (예: 2025-05-21)"
         android:inputType="text"
         android:minHeight="48dp"
         android:padding="8dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/edit_med_desc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+    <EditText
+        android:id="@+id/edit_end_date"
+        android:hint="복용 종료 기간 (비워두면 무기한)"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_start_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/edit_time"
+        android:hint="복용 시간 (예: 19:30)"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_end_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
