@@ -55,17 +55,17 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = calendarAdapter
         }
-
-        binding.tvCalendarTitle.text = "${year}년 ${month}월"
-
-        // 오늘 날짜 기준으로 데이터 로드
         val today = LocalDate.now().toString()
-
-        // 오늘의 약 RecyclerView
-        binding.rvMedications.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@HomeFragment.adapter
-        }
+//        binding.tvCalendarTitle.text = "${year}년 ${month}월"
+//
+//        // 오늘 날짜 기준으로 데이터 로드
+//
+//
+//        // 오늘의 약 RecyclerView
+//        binding.rvMedications.apply {
+//            layoutManager = LinearLayoutManager(requireContext())
+//            adapter = this@HomeFragment.adapter
+//        }
 
         // 오늘 복용할 약 리스트
         lifecycleScope.launch {
@@ -81,8 +81,9 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             val logDao = AppDatabase.getInstance(requireContext()).alarmLogDao()
             val logs = withContext(Dispatchers.IO) {
-                logDao.getLogsByDate(today)
+                logDao.getLogsByDate(today).filter { !it.taken }
             }
+
 
             val container = binding.containerTodayMeds
             container.removeAllViews()
