@@ -4,6 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- 날짜 제목 -->
+    <TextView
+        android:id="@+id/tvDateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="복용 기록"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 전체 복용 여부 -->
+    <TextView
+        android:id="@+id/tvAllTaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아직 복용하지 않은 약이 있습니다"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 추가 설명 -->
+    <TextView
+        android:id="@+id/tvDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아래 체크박스를 눌러 복용 여부를 설정할 수 있습니다"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 약 목록 -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,6 +44,7 @@
             android:layout_height="wrap_content"/>
     </ScrollView>
 
+    <!-- 확인 버튼 -->
     <Button
         android:id="@+id/btn_confirm_all"
         android:text="복용 완료로 저장"

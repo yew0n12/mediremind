@@ -15,7 +15,6 @@
         android:layout_marginStart="16dp"
         android:textStyle="bold"/>
 
-    <!-- Fragment의 최상단에 추가 (예: ConstraintLayout, LinearLayout 등 안에) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_calendar"
         android:layout_width="match_parent"
@@ -30,7 +29,15 @@
         android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    
+
+    <!-- ✅ 여기에 동적 체크박스를 넣을 공간 추가 -->
+    <LinearLayout
+        android:id="@+id/containerTodayMeds"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_medications"
         android:layout_width="match_parent"
@@ -51,5 +58,4 @@
         android:text="습관 정보가 없습니다."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 </LinearLayout>

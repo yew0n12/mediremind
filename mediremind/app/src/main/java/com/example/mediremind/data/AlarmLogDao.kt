@@ -23,6 +23,9 @@ interface AlarmLogDao {
         ORDER BY timestamp ASC
     """)
     suspend fun getLogsByDate(date: String): List<AlarmLog>
+    @Query("UPDATE alarm_logs SET taken = 0 WHERE id = :id")
+    suspend fun markAsNotTaken(id: Int)
+
 }
 
 
