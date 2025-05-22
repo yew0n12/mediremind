@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +16,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.YearMonth
 
 class HomeFragment : Fragment() {
+
     private var _binding: ActivityHomeFragmentBinding? = null
     private val binding get() = _binding!!
     private val adapter = MedAdapter()
-
+    private fun generateDates(): List<LocalDate> {
+        val today = LocalDate.now()
+        return (0..30).map { today.plusDays(it.toLong()) }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,9 +56,50 @@ class HomeFragment : Fragment() {
 //            binding.tvMedicationSummary.text = summary
 //        }
 //    }
+fun generateDatesForMonth(year: Int, month: Int): List<LocalDate> {
+    val yearMonth = YearMonth.of(year, month)
+    val daysInMonth = yearMonth.lengthOfMonth()
+
+    return (1..daysInMonth).map { day ->
+        LocalDate.of(year, month, day)
+    }
+}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
+
+        val year = 2025
+        val month = 5
+        val dates = generateDatesForMonth(2025, 5)
+        val calendarAdapter = CalendarAdapter(generateDatesForMonth(year, month)) { selectedDate ->
+//            val selectedDateStr = selectedDate.toString() // "2025-05-23"
+val dialog = RecordDetailBottomSheet.newInstance(selectedDate.toString())
+    dialog.show(parentFragmentManager, "RecordDetailDialog")
+//            // 코루틴으로 Room에서 기록 조회
+//            lifecycleScope.launch {
+//                val logs = withContext(Dispatchers.IO) {
+//                    AppDatabase.getInstance(requireContext())
+//                        .alarmLogDao()
+//                        .getLogsByDate(selectedDateStr)
+//                }
+//
+//                // 결과를 UI에 표시
+//                if (logs.isEmpty()) {
+//                    binding.tvHabitSummary.text = "기록 없음"
+//                } else {
+//                    binding.tvHabitSummary.text = logs.joinToString("\n") {
+//                        "- ${it.name} (${if (it.taken) "복용함" else "미복용"})"
+//                    }
+//                }
+ //           }
+        }
+        binding.rvCalendar.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            binding.rvCalendar.adapter = calendarAdapter
+        }
+
+        binding.tvCalendarTitle.text = "${year}년 ${month}월"
 
         // 1) RecyclerView 기본 설정
         binding.rvMedications.apply {
