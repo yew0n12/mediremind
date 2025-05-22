@@ -59,9 +59,26 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@HomeFragment.adapter
         }
+
+        // 체크박스 변경 콜백 처리
+        adapter.onTakenChecked = { med, isChecked ->
+            val updated = med.copy(taken = isChecked)
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    AppDatabase.getInstance(requireContext())
+                        .medicationDao()
+                        .update(updated)
+                }
+                // 변경된 항목만 리스트에 반영
+                val newList = adapter.currentList.map { if (it.id == med.id) updated else it }
+                adapter.submitList(newList)
+            }
+        }
+
         // 2) 오늘 날짜 문자열 생성 (YYYY-MM-DD)
         val today = LocalDate.now().toString()
-
+        // 2+) 오늘 날짜 표시
+        binding.tvDate.text = today
         // 3) 비동기로 오늘의 약 목록 조회 및 화면에 반영
         lifecycleScope.launch {
             // 백그라운드 쓰레드에서 DB 호출

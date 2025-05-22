@@ -1,8 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+<!--    <style name="Widget.Mediremind.Card" parent="Widget.MaterialComponents.CardView">-->
+<!--        <item name="cardElevation">2dp</item>-->
+
+
+<!--    </style>-->
+    <style name="Widget.Mediremind.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconSize">28dp</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavTextAppearance.Active</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavTextAppearance.Inactive</item>
+    </style>
+
     <style name="Base.Theme.Mediremind" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bottomNavigationStyle">@style/Widget.Mediremind.BottomNav</item>
     </style>
 
     <style name="Theme.Mediremind" parent="Base.Theme.Mediremind" />
