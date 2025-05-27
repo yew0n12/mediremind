@@ -58,7 +58,6 @@ class HomeFragment : Fragment() {
         val today = LocalDate.now().toString()
 //        binding.tvCalendarTitle.text = "${year}년 ${month}월"
 //
-//        // 오늘 날짜 기준으로 데이터 로드
 //
 //
 //        // 오늘의 약 RecyclerView
