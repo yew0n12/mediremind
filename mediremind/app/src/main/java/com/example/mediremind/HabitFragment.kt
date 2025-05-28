@@ -94,10 +94,39 @@ class HabitFragment : Fragment() {
             val waterMl = waterCups * 200
             val waterLiters = waterMl / 1000.0
             val waterFormatted = "${waterCups}잔 (${String.format("%.1f", waterLiters)}L)"
+            val exerciseProgress = if (goalExerciseMinutes > 0)
+                (exerciseTotalMinutes * 100 / goalExerciseMinutes).coerceAtMost(100) else 0
+            val sleepProgress = if (goalSleepHours > 0)
+                ((sleep / goalSleepHours) * 100).toInt().coerceAtMost(100) else 0
+            val waterProgress = if (goalWaterCups > 0)
+                (waterCups * 100 / goalWaterCups).coerceAtMost(100) else 0
 
-            val summary = "운동: ${exerciseHours}시간 ${exerciseMinutes}분 (${if (exerciseGoalMet) "목표 달성🔥" else "목표 미달성🥲"})\n" +
-                    "수면: ${sleep}시간 (${if (sleepGoalMet) "목표 달성🔥" else "목표 미달성🥲"})\n" +
-                    "물: $waterFormatted (${if (waterGoalMet) "목표 달성🔥" else "목표 미달성🥲"})"
+            val exerciseInfo = if (exerciseGoalMet) {
+                "목표 달성🔥"
+            } else {
+                "목표 미달성🥲 (${exerciseProgress}% 달성, ${100 - exerciseProgress}% 남음)"
+            }
+
+            val sleepInfo = if (sleepGoalMet) {
+                "목표 달성🔥"
+            } else {
+                "목표 미달성🥲 (${sleepProgress}% 달성, ${100 - sleepProgress}% 남음)"
+            }
+
+            val waterInfo = if (waterGoalMet) {
+                "목표 달성🔥"
+            } else {
+                "목표 미달성🥲 (${waterProgress}% 달성, ${100 - waterProgress}% 남음)"
+            }
+
+            val summary = "운동: ${exerciseHours}시간 ${exerciseMinutes}분 ($exerciseInfo)\n" +
+                    "수면: ${sleep}시간 ($sleepInfo)\n" +
+                    "물: $waterFormatted ($waterInfo)"
+
+
+//            val summary = "운동: ${exerciseHours}시간 ${exerciseMinutes}분 (${if (exerciseGoalMet) "목표 달성🔥" else "목표 미달성🥲"})\n" +
+//                    "수면: ${sleep}시간 (${if (sleepGoalMet) "목표 달성🔥" else "목표 미달성🥲"})\n" +
+//                    "물: $waterFormatted (${if (waterGoalMet) "목표 달성🔥" else "목표 미달성🥲"})"
 
             val todayKey = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
