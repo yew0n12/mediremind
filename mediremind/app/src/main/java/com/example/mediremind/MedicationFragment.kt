@@ -7,6 +7,8 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.media.audiofx.BassBoost
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,7 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
-
+import android.provider.Settings
 
 class MedicationFragment : Fragment() {
 
@@ -68,7 +70,7 @@ class MedicationFragment : Fragment() {
                     lifecycleScope.launch(Dispatchers.IO) {
                         AppDatabase.getInstance(requireContext()).medicationDao().delete(med)
                     }
-                    cancelAlarm(med.name)
+                    cancelAlarm(med.name, med.time)
                     refreshList()
 
 //                    Thread {
@@ -213,7 +215,7 @@ class MedicationFragment : Fragment() {
                         withContext(Dispatchers.Main) {
                             refreshList()
                             // 기존 알람 취소 후 새 알람 설정
-                            cancelAlarm(oldMed.name)
+                            cancelAlarm(oldMed.name, oldMed.time, showToast = false) // [수정됨] 취소와 수정 시 취소 토스트 삭제
                             setAlarmByMedication(name, desc, time)
                             Toast.makeText(
                                 requireContext(),
@@ -289,14 +291,30 @@ class MedicationFragment : Fragment() {
             }
             val intent = Intent(requireContext(), AlarmReceiver::class.java).apply {
                 putExtra("medName", name); putExtra("medDesc", desc)
+                putExtra("hour",hour); putExtra("minute", minute) // [추가됨] alarmreceiver와 연결됨, 반복알람용
             }
+            // [추가됨]
+            val requestCode = (name + time).hashCode()
+
             val pi = PendingIntent.getBroadcast(
-                requireContext(), name.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE
+                requireContext(), requestCode, intent, PendingIntent.FLAG_IMMUTABLE
             )
             val am = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            am.setRepeating(
+
+            // [추가됨] 정확한 알림 설정이 되어있는지 판별용
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (!am.canScheduleExactAlarms()) {
+                    Toast.makeText(requireContext(), "⚠ 정확한 알람 권한이 꺼져 있어 알람이 설정되지 않습니다", Toast.LENGTH_LONG).show()
+                    val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM) //정확한 알림 설정 안되어있을 시 설정으로 바로 이동
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    requireContext().startActivity(intent)
+                    return
+                }
+            }
+
+            am.setExactAndAllowWhileIdle( // [수정됨] 정확한 시각에 알람 (setrepeating : 1분 지연됨을 확인함)
                 AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-                AlarmManager.INTERVAL_DAY, pi
+                pi
             )
         }
     }
@@ -367,17 +385,25 @@ private fun parseHourMinute(schedule: String): Pair<Int, Int>? {
 //        Toast.makeText(requireContext(), "알람이 취소되었습니다", Toast.LENGTH_SHORT).show()
 //    }
 
-
-    private fun cancelAlarm(name: String) {
+    // [수정됨] time, showToast 파라미터 추가
+    private fun cancelAlarm(name: String, time: String, showToast: Boolean = true) {
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
+
+        // [수정됨] 고유한 requestcode 생성
+        val requestCode = (name + time).hashCode()
+
         val pi = PendingIntent.getBroadcast(
             requireContext(),
-            name.hashCode(),
+            requestCode,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE //[수정됨] putExtra 내용 보장! 알람 이름이 뜨도록
         )
         (requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(pi)
-        Toast.makeText(requireContext(), "알람이 취소되었습니다", Toast.LENGTH_SHORT).show()
+
+        // [수정됨] showToast 조건문으로 제어 알람 취소 수정 시 취소 토스트 삭제
+        if (showToast) {
+            Toast.makeText(requireContext(), "알람이 취소되었습니다", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
