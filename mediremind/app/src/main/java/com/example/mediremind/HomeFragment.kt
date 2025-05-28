@@ -29,28 +29,6 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        val db = AppDatabase.getInstance(requireContext())
-//        val medicationDao = db.medicationDao()
-//
-//        val today = LocalDate.now().toString()
-//
-//        lifecycleScope.launch {
-//            val meds = withContext(Dispatchers.IO) {
-//                medicationDao.getMedicationsForToday(today)
-//            }
-//
-//            val summary = if (meds.isEmpty()) {
-//                "오늘 복용할 약이 없습니다."
-//            } else {
-//                meds.joinToString("\n") { "- ${it.name} (${it.time})" }
-//            }
-//
-//            binding.tvMedicationSummary.text = summary
-//        }
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -60,7 +38,14 @@ class HomeFragment : Fragment() {
             adapter = this@HomeFragment.adapter
         }
 
-        // 체크박스 변경 콜백 처리
+        // 2) 오늘 날짜 설정
+        val today = LocalDate.now().toString()
+        binding.tvDate.text = today
+
+        // 3) 오늘의 약 목록 불러오기
+        loadMedicationsForToday(today)
+
+        // 4) 체크박스 상태 변경 시 DB 업데이트 + 퍼센트 갱신
         adapter.onTakenChecked = { med, isChecked ->
             val updated = med.copy(taken = isChecked)
             lifecycleScope.launch {
@@ -69,29 +54,17 @@ class HomeFragment : Fragment() {
                         .medicationDao()
                         .update(updated)
                 }
-                // 변경된 항목만 리스트에 반영
-                val newList = adapter.currentList.map { if (it.id == med.id) updated else it }
+
+                val newList = adapter.currentList.map {
+                    if (it.id == med.id) updated else it
+                }
                 adapter.submitList(newList)
+
+                updateProgressPercent(newList)
             }
         }
 
-        // 2) 오늘 날짜 문자열 생성 (YYYY-MM-DD)
-        val today = LocalDate.now().toString()
-        // 2+) 오늘 날짜 표시
-        binding.tvDate.text = today
-        // 3) 비동기로 오늘의 약 목록 조회 및 화면에 반영
-        lifecycleScope.launch {
-            // 백그라운드 쓰레드에서 DB 호출
-            val meds: List<Medication> = withContext(Dispatchers.IO) {
-                AppDatabase.getInstance(requireContext())
-                    .medicationDao()
-                    .getMedicationsForToday(today)
-            }
-            // 조회된 리스트를 Adapter에 전달
-            adapter.submitList(meds)
-        }
-
-        // 4) 오늘의 건강 습관 요약 불러와서 TextView에 표시
+        // 5) 건강 습관 요약 불러오기
         val prefs = requireContext()
             .getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
         val summary = prefs.getString(
@@ -99,22 +72,36 @@ class HomeFragment : Fragment() {
             "오늘 등록된 건강 습관이 없습니다."
         )
         binding.tvHabitSummary.text = summary
+    }
 
+    private fun loadMedicationsForToday(today: String) {
+        lifecycleScope.launch {
+            val meds: List<Medication> = withContext(Dispatchers.IO) {
+                AppDatabase.getInstance(requireContext())
+                    .medicationDao()
+                    .getMedicationsForToday(today)
+            }
+            adapter.submitList(meds)
+            updateProgressPercent(meds)
+        }
+    }
 
-//        binding.rvMedications.layoutManager = LinearLayoutManager(requireContext())
-//        binding.rvMedications.adapter = adapter
-//
-//        val dao = AppDatabase.getInstance(requireContext()).medicationDao()
-//        val today = LocalDate.now().toString()
-//
-//        lifecycleScope.launch {
-//            val meds = withContext(Dispatchers.IO) { dao.getMedicationsForToday(today) }
-//            adapter.submitList(meds)
-//
-//            val prefs = requireContext().getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
-//            val summary = prefs.getString("today_summary", "오늘 등록된 건강 습관이 없습니다.")
-//            binding.tvHabitSummary.text = summary
-//        }
+    private fun updateProgressPercent(meds: List<Medication>) {
+        val total = meds.size
+        val takenCount = meds.count { it.taken }
+        val percent = if (total == 0) 0 else (takenCount * 100) / total
+
+        binding.tvProgressPercent.text = "$percent%"
+
+        // 동적 상태 메시지 설정
+        val statusText = when {
+            total == 0 -> "No Medication\nToday!"
+            percent == 100 -> "All Done!\nPerfect!"
+            percent >= 70 -> "Great Job!\nAlmost Done!"
+            percent >= 30 -> "Keep Going!\nYou're Getting There!"
+            else -> "Your Plan\nJust Started!"
+        }
+        binding.tvProgressTitle.text = statusText
     }
 
     override fun onDestroyView() {
