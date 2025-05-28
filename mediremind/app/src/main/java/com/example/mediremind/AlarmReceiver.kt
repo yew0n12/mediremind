@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.util.Log
@@ -25,6 +26,7 @@ import java.util.Calendar
 
 class AlarmReceiver : BroadcastReceiver() {
 
+    @SuppressLint("ScheduleExactAlarm")
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("AlarmReceiver", "알람 발동 시간: ${Date(System.currentTimeMillis())}")
 
@@ -54,13 +56,13 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_notification) // 아이콘 없으면 기본 앱 아이콘 사용
-            .setContentTitle(medName) //약 복용 시간입니다.
+            .setContentTitle(medName) //약 복용 시간니다.
             .setContentText(medDesc) //설정한 시간에 약을 복용하세요
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent) // [추가됨] 알림 클릭하면 앱을 열어주기
 
-        // [추가됨] 다음날 알림 재예약
+        // [추가됨] 다음날 알림 재예약입
         val nextCalendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             add(Calendar.DAY_OF_YEAR, 1)
@@ -72,7 +74,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notificationManager = NotificationManagerCompat.from(context)
 
-        // ✅ Android 13 이상에서는 POST_NOTIFICATIONS 권한 체크 필요
+        // Android 13 이상에서는 POST_NOTIFICATIONS 권한 체크 필요
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val hasPermission = ContextCompat.checkSelfPermission(
                 context, android.Manifest.permission.POST_NOTIFICATIONS
