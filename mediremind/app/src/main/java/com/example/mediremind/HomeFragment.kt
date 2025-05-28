@@ -48,15 +48,15 @@ class HomeFragment : Fragment() {
         // 4) 체크박스 상태 변경 시 DB 업데이트 + 퍼센트 갱신
         adapter.onTakenChecked = { med, isChecked ->
             val updated = med.copy(taken = isChecked)
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    AppDatabase.getInstance(requireContext())
-                        .medicationDao()
-                        .update(updated)
-                }
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                AppDatabase.getInstance(requireContext())
+                                    .medicationDao()
+                                    .update(updated)
+                            }
 
-                val newList = adapter.currentList.map {
-                    if (it.id == med.id) updated else it
+                            val newList = adapter.currentList.map {
+                                if (it.id == med.id) updated else it
                 }
                 adapter.submitList(newList)
 
