@@ -1,6 +1,6 @@
 package com.example.mediremind
 
-import android.app.DatePickerDialog
+//import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.*
+//import java.util.*
 
 class HomeFragment : Fragment() {
     private var _binding: ActivityHomeFragmentBinding? = null
@@ -73,19 +73,19 @@ class HomeFragment : Fragment() {
     }
 
     // DatePicker 다이얼로그 표시
-    private fun showDatePicker() {
-        val dp = DatePickerDialog(
-            requireContext(),
-            { _, year, month, day ->
-                selectedDate = LocalDate.of(year, month + 1, day)
-                updateUIForDate(selectedDate)
-            },
-            selectedDate.year,
-            selectedDate.monthValue - 1,
-            selectedDate.dayOfMonth
-        )
-        dp.show()
-    }
+//    private fun showDatePicker() {
+//        val dp = DatePickerDialog(
+//            requireContext(),
+//            { _, year, month, day ->
+//                selectedDate = LocalDate.of(year, month + 1, day)
+//                updateUIForDate(selectedDate)
+//            },
+//            selectedDate.year,
+//            selectedDate.monthValue - 1,
+//            selectedDate.dayOfMonth
+//        )
+//        dp.show()
+//    }
 
     // 화면에 날짜별 데이터를 로딩
     private fun updateUIForDate(date: LocalDate) {
