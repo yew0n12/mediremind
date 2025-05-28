@@ -94,9 +94,9 @@ class HomeFragment : Fragment() {
                 "⚠️ 복용해야 할 약이 있습니다"
             }
 
-            // 체크박스 표시
-            val container = binding.containerTodayMeds
-            container.removeAllViews()
+//            // 체크박스 표시
+//            val container = binding.containerTodayMeds
+//            container.removeAllViews()
 
             logs.forEach { log ->
                 val checkBox = CheckBox(requireContext()).apply {
@@ -119,7 +119,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-                container.addView(checkBox)
+                //container.addView(checkBox)
             }
         }
 

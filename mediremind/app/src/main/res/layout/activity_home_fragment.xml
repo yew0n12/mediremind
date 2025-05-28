@@ -92,13 +92,13 @@
                 android:textColor="@android:color/holo_red_dark"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- 동적 체크박스 컨테이너 -->
-            <LinearLayout
-                android:id="@+id/containerTodayMeds"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp" />
+<!--            &lt;!&ndash; 동적 체크박스 컨테이너 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/containerTodayMeds"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="8dp" />-->
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
