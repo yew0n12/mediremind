@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="NavLabelText" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:paddingTop">10dp</item>   <!-- 아이콘과 라벨 사이 추가 여백 -->
+    </style>
+
+    <style name="BottomNavTextAppearance.Active" parent="TextAppearance.MaterialComponents.Caption">
+        <!-- 선택된 항목 라벨 크기 -->
+        <item name="android:textSize">14sp</item>
+
+    </style>
+
+    <style name="BottomNavTextAppearance.Inactive" parent="TextAppearance.MaterialComponents.Caption">
+        <!-- 비선택 항목 라벨 크기 -->
+        <item name="android:textSize">12sp</item>
+    </style>
+
+</resources>

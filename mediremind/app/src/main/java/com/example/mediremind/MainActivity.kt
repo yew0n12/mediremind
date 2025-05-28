@@ -5,17 +5,19 @@ import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.mediremind.databinding.ActivityMainBinding
-
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +47,22 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
+
+
+
+        val navView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val container = findViewById<FragmentContainerView>(R.id.nav_host_fragment)
+
+        navView.post {
+            // nav 높이 측정해서 MedicineFragment 레이아웃 띄워주기
+            val navHeight = navView.height
+
+            // container 에 bottom 마진으로 navHeight 만큼 띄워 주기
+            (container.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                bottomMargin = navHeight
+                container.layoutParams = this
+            }
+        }
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

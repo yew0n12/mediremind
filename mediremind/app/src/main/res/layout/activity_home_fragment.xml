@@ -3,26 +3,55 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+    <TextView
+        android:id="@+id/tvGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hey, user!"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif"
+        android:layout_marginBottom="2dp"
+        android:textSize="15sp"
+        android:textColor="#93999E"
+
+        />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:text="2000-00-00"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginBottom="12dp"/>
 
     <TextView
         android:id="@+id/tv_medication_summary"
-        android:text="오늘의 약 복용"
+        android:text="Medications for Today"
+        android:layout_marginLeft="5dp"
         android:textSize="20sp"
+        android:fontFamily="sans-serif"
         android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_medications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rv_medications"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <TextView
         android:id="@+id/tv_habit_title"
         android:text="오늘의 건강 습관 요약"
         android:textSize="20sp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
@@ -31,7 +60,14 @@
     <TextView
         android:id="@+id/tv_habit_summary"
         android:text="습관 정보가 없습니다."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:padding="5dp"
+        android:background="@drawable/rv_medications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:layout_marginBottom="2dp"
+        android:textSize="15sp"
+        android:textColor="#93999E"
+        />
 
 </LinearLayout>

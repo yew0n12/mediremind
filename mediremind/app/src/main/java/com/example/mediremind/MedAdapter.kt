@@ -16,8 +16,18 @@ class MedAdapter : ListAdapter<Medication, MedAdapter.VH>(MedDiffCallback()) {
         fun bind(m: Medication) {
             binding.tvName.text = m.name
             binding.tvTime.text = m.time
+            // 리사이클링 시 이전 리스너 제거 후 상태 반영
+            binding.checkBoxTaken.setOnCheckedChangeListener(null)
+            binding.checkBoxTaken.isChecked = m.taken  // 체크박스 초기 상태 설정
+            // 체크 상태 변경 리스너 등록
+            binding.checkBoxTaken.setOnCheckedChangeListener { _, isChecked ->
+                onTakenChecked?.invoke(m, isChecked) // 프래그먼트에 이벤트 전달
+            }
         }
     }
+
+    // 체크박스 상태 변경 시 호출될 람다 함수
+    var onTakenChecked: ((Medication, Boolean) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val binding = ItemMedBinding.inflate(
@@ -41,3 +51,5 @@ class MedDiffCallback : DiffUtil.ItemCallback<Medication>() {
     override fun areContentsTheSame(old: Medication, new: Medication) =
         old == new
 }
+
+
