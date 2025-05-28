@@ -1,17 +1,14 @@
 package com.example.mediremind
 
+import android.app.DatePickerDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mediremind.data.AlarmLog
 import com.example.mediremind.data.AppDatabase
 import com.example.mediremind.data.Medication
 import com.example.mediremind.databinding.ActivityHomeFragmentBinding
@@ -20,11 +17,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class HomeFragment : Fragment() {
     private var _binding: ActivityHomeFragmentBinding? = null
     private val binding get() = _binding!!
     private val adapter = MedAdapter()
+
+    // 현재 화면에 표시 중인 날짜
+    private var selectedDate: LocalDate = LocalDate.now()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,128 +39,79 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val db = AppDatabase.getInstance(requireContext())
-        val logDao = db.alarmLogDao()
-        val medDao = db.medicationDao()
+        // 1) 수평 달력 설정 (월별 날짜)
         val today = LocalDate.now()
-        val epochDay = today.toEpochDay()
+        setupMonthCalendar(today.year, today.monthValue)
 
+        // 2) 리사이클러뷰 설정
+        binding.rvMedications.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@HomeFragment.adapter
+        }
 
-        // 가로 달력 설정
-        val year = today.year
-        val month = today.monthValue
-        val calendarAdapter = CalendarAdapter(generateDatesForMonth(year, month)) { selectedDate ->
-            val dialog = RecordDetailBottomSheet.newInstance(selectedDate.toString())
-            dialog.show(parentFragmentManager, "RecordDetailDialog")
+        // 3) 날짜 선택 버튼
+//        binding.btnSelectDate.setOnClickListener {
+//            showDatePicker()
+//        }
+
+        // 첫 화면에 오늘 날짜 기준 UI 업데이트
+        updateUIForDate(selectedDate)
+    }
+
+    // 달력을 위한 어댑터 설정
+    private fun setupMonthCalendar(year: Int, month: Int) {
+        val dates = generateDatesForMonth(year, month)
+        val calendarAdapter = CalendarAdapter(dates) { clickedDate ->
+            // 달력에서 날짜 클릭 시 해당 날짜로 UI 업데이트
+            selectedDate = clickedDate
+            updateUIForDate(clickedDate)
         }
         binding.rvCalendar.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvCalendar.adapter = calendarAdapter
         binding.tvCalendarTitle.text = "${year}년 ${month}월"
-
-        // RecyclerView 설정
-        binding.rvMedications.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvMedications.adapter = adapter
-
-        // 오늘의 약 복용 로그 없으면 추가
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val meds = medDao.getAll().filter {
-                    val start = LocalDate.parse(it.startDate)
-                    val end = it.endDate?.let { LocalDate.parse(it) } ?: LocalDate.MAX
-                    today in start..end
-                }
-                meds.forEach { med ->
-                    val exists = logDao.exists(epochDay, med.name)
-                    if (!exists) {
-                        logDao.insert(
-                            AlarmLog(
-                                name = med.name,
-                                desc = med.description,
-                                timestamp = epochDay,
-                                taken = false
-                            )
-                        )
-                    }
-                }
-            }
-
-//            // 오늘의 로그 가져와 UI 업데이트
-//            val logs = withContext(Dispatchers.IO) {
-//                logDao.getLogsByDate(epochDay)
-//            }
-//
-//            binding.tvStatus.text = if (logs.all { it.taken }) {
-//                "✅ 오늘의 약을 모두 복용했습니다!"
-//            } else {
-//                "⚠️ 복용해야 할 약이 있습니다"
-//            }
-
-            // 체크박스 표시
-//            val container = binding.containerTodayMeds
-//            container.removeAllViews()
-//
-//            logs.forEach { log ->
-//                val checkBox = CheckBox(requireContext()).apply {
-//                    text = log.name
-//                    isChecked = log.taken
-//                    setTextColor(if (log.taken) Color.GRAY else Color.BLACK)
-//                }
-//                checkBox.setOnCheckedChangeListener { _, _ ->
-//                    lifecycleScope.launch(Dispatchers.IO) {
-//                        if (checkBox.isChecked) logDao.markAsTaken(log.id)
-//                        else logDao.markAsNotTaken(log.id)
-//
-//                        val updatedLogs = logDao.getLogsByDate(epochDay)
-//                        withContext(Dispatchers.Main) {
-//                            binding.tvStatus.text = if (updatedLogs.all { it.taken }) {
-//                                "✅ 오늘의 약을 모두 복용했습니다!"
-//                            } else {
-//                                "⚠️ 복용해야 할 약이 있습니다"
-//                            }
-//                        }
-//                    }
-//                }
-//                container.addView(checkBox)
-//            }
-        }
-
-        // 오늘의 약 목록 불러오기
-        loadMedicationsForToday(today.toString())
-
-        // 체크박스 상태 변경 시 DB 업데이트 + 퍼센트 갱신
-        adapter.onTakenChecked = { med, isChecked ->
-            val updated = med.copy(taken = isChecked)
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    medDao.update(updated)
-                }
-                val newList = adapter.currentList.map {
-                    if (it.id == med.id) updated else it
-                }
-                adapter.submitList(newList)
-                updateProgressPercent(newList)
-            }
-        }
-
-        // 습관 요약
-        val prefs = requireContext().getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
-        binding.tvHabitSummary.text =
-            prefs.getString("today_summary", "오늘 등록된 건강 습관이 없습니다.")
     }
 
-    private fun loadMedicationsForToday(today: String) {
+    // DatePicker 다이얼로그 표시
+    private fun showDatePicker() {
+        val dp = DatePickerDialog(
+            requireContext(),
+            { _, year, month, day ->
+                selectedDate = LocalDate.of(year, month + 1, day)
+                updateUIForDate(selectedDate)
+            },
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth
+        )
+        dp.show()
+    }
+
+    // 화면에 날짜별 데이터를 로딩
+    private fun updateUIForDate(date: LocalDate) {
+        val dateString = date.format(DateTimeFormatter.ISO_DATE) // yyyy-MM-dd
+
+        // 선택한 날짜 표시
+//        binding.tvSelectedDate.text = "선택한 날짜: $dateString"
+
+        // 1) 약 목록 조회
         lifecycleScope.launch {
             val meds: List<Medication> = withContext(Dispatchers.IO) {
                 AppDatabase.getInstance(requireContext())
                     .medicationDao()
-                    .getMedicationsForToday(today)
+                    .getMedicationsForToday(dateString)
             }
             adapter.submitList(meds)
             updateProgressPercent(meds)
         }
+
+        // 2) 건강 습관 요약 불러오기
+        val prefs = requireContext().getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
+        val summary = prefs.getString(dateString, "이 날 등록된 건강 습관이 없습니다.")
+        binding.tvHabitSummary.text = summary
     }
 
+    // 복용 퍼센트 계산 및 상태 메시지 업데이트
     private fun updateProgressPercent(meds: List<Medication>) {
         val total = meds.size
         val takenCount = meds.count { it.taken }
@@ -176,11 +129,18 @@ class HomeFragment : Fragment() {
         binding.tvProgressTitle.text = statusText
     }
 
+    // 해당 월의 날짜 리스트 생성
     private fun generateDatesForMonth(year: Int, month: Int): List<LocalDate> {
-        val yearMonth = YearMonth.of(year, month)
-        return (1..yearMonth.lengthOfMonth()).map { day ->
+        val ym = YearMonth.of(year, month)
+        return (1..ym.lengthOfMonth()).map { day ->
             LocalDate.of(year, month, day)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 복귀 시에도 선택된 날짜 기준 데이터 갱신
+        updateUIForDate(selectedDate)
     }
 
     override fun onDestroyView() {

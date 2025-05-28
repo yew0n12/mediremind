@@ -1,46 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <!-- ✅ 목표 설정 -->
+        <TextView
+            android:text="목표 설정"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+         />
+
+        <!-- 선택된 날짜 표시 -->
+        <TextView
+            android:id="@+id/text_selected_date"
+            android:text="선택된 날짜: 오늘"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- 🩺 오늘의 건강 습관 -->
         <TextView
             android:text="오늘의 건강 습관"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
+        <!-- 체크박스로 간단 토글 -->
         <CheckBox
             android:id="@+id/checkbox_exercise"
             android:text="운동 했어요"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <CheckBox
             android:id="@+id/checkbox_sleep"
             android:text="충분히 잤어요"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <CheckBox
             android:id="@+id/checkbox_water"
             android:text="물을 충분히 마셨어요"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
+        <!-- 수치 입력 필드 (선택) -->
+        <EditText
+            android:id="@+id/edit_exercise_minutes"
+            android:hint="운동 시간 (분)"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:paddingVertical="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_sleep_hours"
+            android:hint="수면 시간 (시간)"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            android:paddingVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_water_cups"
+            android:hint="물 섭취 (잔)"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:paddingVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 최종 기록 저장 버튼 -->
         <Button
             android:id="@+id/btn_save"
             android:text="기록 저장"
             android:backgroundTint="@color/blue"
             android:layout_marginTop="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </ScrollView>

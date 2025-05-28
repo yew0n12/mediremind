@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -15,31 +16,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <!-- 캘린더 제목 -->
+            <!-- 1. 캘린더 -->
             <TextView
                 android:id="@+id/tv_calendar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2025년 5월"
                 android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
                 android:textStyle="bold"/>
 
-            <!-- 캘린더 RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_calendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"/>
 
-            <!-- 진행 상태 카드 -->
+            <!-- 2. 날짜 선택 -->
+<!--            <TextView-->
+<!--                android:id="@+id/tvSelectedDate"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="선택한 날짜: 오늘"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_marginTop="12dp"/>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btnSelectDate"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="날짜 선택"-->
+<!--                android:layout_marginTop="4dp"/>-->
+
+            <!-- 3. 진행 상태 카드 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
@@ -53,65 +66,50 @@
                         android:id="@+id/tvProgressTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Your Plan\nIs Almost Done!"
+                        android:text="Your Plan\nAlmost Done!"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="13% than week ago"
-                        android:textSize="14sp"
-                        android:textColor="#888888"/>
 
                     <TextView
                         android:id="@+id/tvProgressPercent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
                         android:text="78%"
                         android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- 약 복용 요약 -->
+            <!-- 4. 약 복용 요약 & 리스트 -->
             <TextView
                 android:id="@+id/tv_medication_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="오늘의 약 복용"
                 android:textSize="20sp"
-                android:layout_marginBottom="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_marginTop="16dp"/>
 
-<!--            <TextView-->
-<!--                android:id="@+id/tvStatus"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="복용 상태 텍스트"-->
-<!--                android:textColor="@android:color/holo_red_dark"-->
-<!--                android:layout_marginBottom="8dp"/>-->
-
-            <!-- 동적 체크박스 컨테이너 -->
-<!--            <LinearLayout-->
-<!--                android:id="@+id/containerTodayMeds"-->
-<!--                android:orientation="vertical"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="8dp" />-->
-
-            <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_medications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-            <!-- 건강 습관 요약 카드 -->
+            <!-- 5. 건강 습관 요약 -->
+            <TextView
+                android:id="@+id/tv_habit_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오늘의 건강 습관 요약"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"/>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginTop="8dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
@@ -125,14 +123,6 @@
                     android:textColor="#666666"/>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_habit_title"
-                android:text="오늘의 건강 습관 요약"
-                android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
@@ -142,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
+        app:srcCompat="@drawable/ic_add"
         app:backgroundTint="@color/blue"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
