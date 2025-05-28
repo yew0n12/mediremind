@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.util.Log
@@ -25,6 +26,7 @@ import java.util.Calendar
 
 class AlarmReceiver : BroadcastReceiver() {
 
+    @SuppressLint("ScheduleExactAlarm")
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("AlarmReceiver", "알람 발동 시간: ${Date(System.currentTimeMillis())}")
 
