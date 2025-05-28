@@ -83,44 +83,44 @@ class HomeFragment : Fragment() {
                 }
             }
 
-            // 오늘의 로그 가져와 UI 업데이트
-            val logs = withContext(Dispatchers.IO) {
-                logDao.getLogsByDate(epochDay)
-            }
-
-            binding.tvStatus.text = if (logs.all { it.taken }) {
-                "✅ 오늘의 약을 모두 복용했습니다!"
-            } else {
-                "⚠️ 복용해야 할 약이 있습니다"
-            }
+//            // 오늘의 로그 가져와 UI 업데이트
+//            val logs = withContext(Dispatchers.IO) {
+//                logDao.getLogsByDate(epochDay)
+//            }
+//
+//            binding.tvStatus.text = if (logs.all { it.taken }) {
+//                "✅ 오늘의 약을 모두 복용했습니다!"
+//            } else {
+//                "⚠️ 복용해야 할 약이 있습니다"
+//            }
 
             // 체크박스 표시
-            val container = binding.containerTodayMeds
-            container.removeAllViews()
-
-            logs.forEach { log ->
-                val checkBox = CheckBox(requireContext()).apply {
-                    text = log.name
-                    isChecked = log.taken
-                    setTextColor(if (log.taken) Color.GRAY else Color.BLACK)
-                }
-                checkBox.setOnCheckedChangeListener { _, _ ->
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        if (checkBox.isChecked) logDao.markAsTaken(log.id)
-                        else logDao.markAsNotTaken(log.id)
-
-                        val updatedLogs = logDao.getLogsByDate(epochDay)
-                        withContext(Dispatchers.Main) {
-                            binding.tvStatus.text = if (updatedLogs.all { it.taken }) {
-                                "✅ 오늘의 약을 모두 복용했습니다!"
-                            } else {
-                                "⚠️ 복용해야 할 약이 있습니다"
-                            }
-                        }
-                    }
-                }
-                container.addView(checkBox)
-            }
+//            val container = binding.containerTodayMeds
+//            container.removeAllViews()
+//
+//            logs.forEach { log ->
+//                val checkBox = CheckBox(requireContext()).apply {
+//                    text = log.name
+//                    isChecked = log.taken
+//                    setTextColor(if (log.taken) Color.GRAY else Color.BLACK)
+//                }
+//                checkBox.setOnCheckedChangeListener { _, _ ->
+//                    lifecycleScope.launch(Dispatchers.IO) {
+//                        if (checkBox.isChecked) logDao.markAsTaken(log.id)
+//                        else logDao.markAsNotTaken(log.id)
+//
+//                        val updatedLogs = logDao.getLogsByDate(epochDay)
+//                        withContext(Dispatchers.Main) {
+//                            binding.tvStatus.text = if (updatedLogs.all { it.taken }) {
+//                                "✅ 오늘의 약을 모두 복용했습니다!"
+//                            } else {
+//                                "⚠️ 복용해야 할 약이 있습니다"
+//                            }
+//                        }
+//                    }
+//                }
+//                container.addView(checkBox)
+//            }
         }
 
         // 오늘의 약 목록 불러오기
