@@ -29,6 +29,13 @@
         android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="복용 상태 텍스트"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginBottom="8dp"/>
 
     <!-- ✅ 여기에 동적 체크박스를 넣을 공간 추가 -->
     <LinearLayout
