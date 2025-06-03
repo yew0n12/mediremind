@@ -5,4 +5,7 @@
     <color name="blue">#448FF0</color>
     <color name="deepblue">#942155F3</color>
     <color name="lightblue">#6BB0E7</color>
+    <color name="lightPurple">#F4F0FF</color>
+    <color name="Purple">#E3DCFA</color>
+
 </resources>

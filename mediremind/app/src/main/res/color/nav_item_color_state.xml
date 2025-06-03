@@ -4,4 +4,6 @@
     <item android:color="#942155F3" android:state_checked="true"/>
     <!-- 나머지는 회색 계열 -->
     <item android:color="@color/blue"/>
+
+
 </selector>

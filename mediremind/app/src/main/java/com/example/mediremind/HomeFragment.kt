@@ -111,10 +111,21 @@ class HomeFragment : Fragment() {
             updateProgressPercent(meds)
         }
 
+        /*
         // 2) 건강 습관 요약 불러오기
         val prefs = requireContext().getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
         val summary = prefs.getString(dateString, "이 날 등록된 건강 습관이 없습니다.")
         binding.tvHabitSummary.text = summary
+        */
+
+        val prefs = requireContext().getSharedPreferences("habit_prefs", Context.MODE_PRIVATE)
+        val summary = prefs.getString(dateString, "")
+
+        val lines = summary?.split("\n") ?: emptyList()
+        binding.tvExercise.text = lines.getOrNull(0) ?: "운동 기록 없음"
+        binding.tvSleep.text = lines.getOrNull(1) ?: "수면 기록 없음"
+        binding.tvWater.text = lines.getOrNull(2) ?: "물 섭취 기록 없음"
+
     }
 
     // 복용 퍼센트 계산 및 상태 메시지 업데이트
@@ -126,11 +137,11 @@ class HomeFragment : Fragment() {
         binding.tvProgressPercent.text = "$percent%"
 
         val statusText = when {
-            total == 0 -> "No Medication\nToday!"
-            percent == 100 -> "All Done!\nPerfect!"
-            percent >= 70 -> "Great Job!\nAlmost Done!"
-            percent >= 30 -> "Keep Going!\nYou're Getting There!"
-            else -> "Your Plan\nJust Started!"
+            total == 0 -> "No Medication Today!"
+            percent == 100 -> "All Done! Perfect!"
+            percent >= 70 -> "Great Job! Almost Done!"
+            percent >= 30 -> "Keep Going! You're Getting There!"
+            else -> "Your Plan Just Started!"
         }
         binding.tvProgressTitle.text = statusText
     }

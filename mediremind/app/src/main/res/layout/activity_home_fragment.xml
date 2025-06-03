@@ -16,11 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/tv_calendar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2025년 5월"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
@@ -30,19 +37,11 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <TextView
-                        android:id="@+id/tv_calendar_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2025년 5월"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_calendar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="54dp"
+                        android:layout_marginTop="2dp"
                         android:orientation="horizontal"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -65,7 +64,7 @@
                         android:id="@+id/tvProgressTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Your Plan\nAlmost Done!"
+                        android:text="Your Plan Almost Done!"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
 
@@ -84,6 +83,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/lightPurple"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
@@ -110,10 +110,11 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!-- 5. 건강 습관 요약 -->
-            <!-- 5. 건강 습관 요약 -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/Purple"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
@@ -129,18 +130,44 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오늘의 건강 습관 요약"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
-                    <TextView
-                        android:id="@+id/tv_habit_summary"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_marginTop="8dp"
-                        android:text="오늘의 건강 습관이 없습니다."
-                        android:textSize="16sp"
-                        android:textColor="#666666"/>
+                        android:paddingStart="4dp">
+
+                        <TextView
+                            android:id="@+id/tv_exercise"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="운동: 0시간 30분 (목표 달성🔥)"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_sleep"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="수면: 5.0시간 (목표 달성🔥)"
+                            android:textSize="16sp"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tv_water"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="물: 10잔 (2.0L) (목표 달성🔥)"
+                            android:textSize="16sp"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+
 
 
         </LinearLayout>
