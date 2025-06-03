@@ -49,6 +49,26 @@ class HomeFragment : Fragment() {
             adapter = this@HomeFragment.adapter
         }
 
+        adapter.onTakenChecked = { medication, isChecked ->
+            medication.taken = isChecked
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    AppDatabase.getInstance(requireContext())
+                        .medicationDao()
+                        .update(medication)
+                }
+
+                val updatedList = withContext(Dispatchers.IO) {
+                    AppDatabase.getInstance(requireContext())
+                        .medicationDao()
+                        .getMedicationsForToday(selectedDate.format(DateTimeFormatter.ISO_DATE))
+                }
+                adapter.submitList(updatedList)
+                updateProgressPercent(updatedList)
+            }
+        }
+
+
         // 3) 날짜 선택 버튼
 //        binding.btnSelectDate.setOnClickListener {
 //            showDatePicker()
@@ -72,20 +92,6 @@ class HomeFragment : Fragment() {
         binding.tvCalendarTitle.text = "${year}년 ${month}월"
     }
 
-    // DatePicker 다이얼로그 표시
-//    private fun showDatePicker() {
-//        val dp = DatePickerDialog(
-//            requireContext(),
-//            { _, year, month, day ->
-//                selectedDate = LocalDate.of(year, month + 1, day)
-//                updateUIForDate(selectedDate)
-//            },
-//            selectedDate.year,
-//            selectedDate.monthValue - 1,
-//            selectedDate.dayOfMonth
-//        )
-//        dp.show()
-//    }
 
     // 화면에 날짜별 데이터를 로딩
     private fun updateUIForDate(date: LocalDate) {

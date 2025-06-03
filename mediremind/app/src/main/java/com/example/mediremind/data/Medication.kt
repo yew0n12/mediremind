@@ -13,5 +13,5 @@ data class Medication(
     val startDate: String,       // ex) "2025-05-21"
     val endDate: String?,        // ex) "2025-06-01" or null (null이면 무기한)
     val time: String,            // ex) "08:00"
-    val taken: Boolean = false   // 복용 여부 추가 (default : false)
+    var taken: Boolean = false   // 복용 여부 추가 (default : false)
 )
