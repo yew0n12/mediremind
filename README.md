@@ -48,3 +48,64 @@
 
 ---
 
+<table width="800">
+<thead>
+<tr>
+<th width="100" align="center">이름</th>
+<th width="250" align="center">역할</th>
+<th width="150" align="center">Github 계정</th>
+</tr> 
+</thead>
+
+<tbody>
+<tr>
+<td width="100" align="center">나예원</td>
+<td width="250" align="center">기획 및 개발</td>
+<td width="150" align="center">
+  <a href="https://github.com/yew0n12" target="_blank"><img src="https://img.shields.io/badge/yew0n12-655ced?style=social&logo=github"></a></td>
+</tr>
+
+<tr>
+<td width="100" align="center">정원영</td>
+<td width="250" align="center">개발</td>
+<td width="150" align="center">	
+	<a href="https://github.com/wrd1stProgrammer" target="_blank"><img src="https://img.shields.io/badge/minsik-655ced?style=social&logo=github"/></a>
+</td>
+</tr>
+	
+<tr>
+<td width="100" align="center">김동훈</td>
+<td width="250" align="center">개발</td>
+<td width="150" align="center">	
+	<a href="https://github.com/ppre1ude" target="_blank"><img src="https://img.shields.io/badge/ppre1ude-655ced?style=social&logo=github"></a></td>
+</td>
+</tr>
+
+<tr>
+<td width="100" align="center">박예나</td>
+<td width="250" align="center">개발</td>
+<td width="150" align="center">	
+	<a href="" target="https://github.com/hyunminee"><img src="https://img.shields.io/badge/hyunminee-655ced?style=social&logo=github"></a></td>
+</td>
+</tr>
+	
+<tr>
+<td width="100" align="center">오영서</td>
+<td width="250" align="center">FE</td>
+<td width="150" align="center">	
+	<a href="https://github.com/mono009" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
+</td>
+</tr>
+
+<tr>
+<td width="100" align="center">박시훈</td>
+<td width="250" align="center">FE</td>
+<td width="150" align="center">	
+	<a href="https://github.com/mono009" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
