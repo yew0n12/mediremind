@@ -69,7 +69,7 @@
 <td width="100" align="center">정원영</td>
 <td width="250" align="center">개발</td>
 <td width="150" align="center">	
-	<a href="https://github.com/wrd1stProgrammer" target="_blank"><img src="https://img.shields.io/badge/minsik-655ced?style=social&logo=github"/></a>
+	<a href="https://github.com/lenis02" target="_blank"><img src="https://img.shields.io/badge/minsik-655ced?style=social&logo=github"/></a>
 </td>
 </tr>
 	
@@ -77,7 +77,7 @@
 <td width="100" align="center">김동훈</td>
 <td width="250" align="center">개발</td>
 <td width="150" align="center">	
-	<a href="https://github.com/ppre1ude" target="_blank"><img src="https://img.shields.io/badge/ppre1ude-655ced?style=social&logo=github"></a></td>
+	<a href="https://github.com/donghunKim-ai" target="_blank"><img src="https://img.shields.io/badge/ppre1ude-655ced?style=social&logo=github"></a></td>
 </td>
 </tr>
 
@@ -85,7 +85,7 @@
 <td width="100" align="center">박예나</td>
 <td width="250" align="center">개발</td>
 <td width="150" align="center">	
-	<a href="" target="https://github.com/hyunminee"><img src="https://img.shields.io/badge/hyunminee-655ced?style=social&logo=github"></a></td>
+	<a href="" target="https://github.com/Yena114"><img src="https://img.shields.io/badge/hyunminee-655ced?style=social&logo=github"></a></td>
 </td>
 </tr>
 	
@@ -93,7 +93,7 @@
 <td width="100" align="center">오영서</td>
 <td width="250" align="center">개발</td>
 <td width="150" align="center">	
-	<a href="https://github.com/mono009" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
+	<a href="https://github.com/YoungSeo-coder" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
 </td>
 </tr>
 
@@ -101,7 +101,7 @@
 <td width="100" align="center">박시훈</td>
 <td width="250" align="center">개발</td>
 <td width="150" align="center">	
-	<a href="https://github.com/mono009" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
+	<a href="https://github.com/sihoon-0077" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
 </td>
 </tr>
 
