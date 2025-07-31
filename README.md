@@ -91,7 +91,7 @@
 	
 <tr>
 <td width="100" align="center">오영서</td>
-<td width="250" align="center">FE</td>
+<td width="250" align="center">개발</td>
 <td width="150" align="center">	
 	<a href="https://github.com/mono009" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
 </td>
@@ -99,7 +99,7 @@
 
 <tr>
 <td width="100" align="center">박시훈</td>
-<td width="250" align="center">FE</td>
+<td width="250" align="center">개발</td>
 <td width="150" align="center">	
 	<a href="https://github.com/mono009" target="_blank"><img src="https://img.shields.io/badge/mono009-655ced?style=social&logo=github"/></a>
 </td>
