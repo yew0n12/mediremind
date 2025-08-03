@@ -46,16 +46,18 @@
 2. `app/src/main/java/com/example/mediremind` 내 주요 클래스 확인
 3. 에뮬레이터 또는 실제 기기에서 실행
 
-### 안드로이드 앱 실행
-1. .apk 파일 다운로드
-2. 안드로이드 휴대폰에서 실행 
+### 📥 APK 다운로드  
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?logo=android)](./app-release.apk)
+
+- 위 버튼을 클릭하여 APK 파일을 다운로드한 후, 안드로이드 휴대폰에서 설치해 주세요.
+- **앱 권한 설정**이 필요할 수 있습니다.
 ---
 
 ## 👩‍💻 팀원 소개
 
 | 이름 | GitHub ID | 역할 |
 |------|-----------|------|
-| **나예원** | [yew0n12](https://github.com/yew0n12) | **팀장**, 앱 구조 설계 & 메인 화면 개발 |
+| **나예원** | [yew0n12](https://github.com/yew0n12) | 팀장, 앱 구조 설계 & 메인 화면 개발 |
 | 김동훈 | [donghunKim-ai](https://github.com/donghunKim-ai) | 약 복용 관리 기능 개발 |
 | 정원영 | [lenis02](https://github.com/lenis02) | 앱 구조 설계 & 메인 화면 개발 |
 | 박시훈 | [sihoon-0077](https://github.com/sihoon-0077) | 약 복용 관리 기능 개발 |
