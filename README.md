@@ -8,7 +8,6 @@
 
 - 개발 기간: 2025.03 ~ 2025.08
 ---
-
 ## 주요 기능
 
 ### 구현 완료
@@ -33,6 +32,36 @@
 - **Notification**: Android AlarmManager + NotificationCompat  
 - **Etc**: ViewModel, LiveData, RecyclerView, Fragment
 
+---
+
+## 프로젝트 구조
+```
+mediremind/
+├── app/
+│   └── src/
+│       └── main/
+│           ├── java/com/example/mediremind/
+│           │   ├── data/                        # Room 관련 데이터 관리 클래스
+│           │   ├── HomeFragment.kt              # 메인 홈 화면
+│           │   ├── HabitFragment.kt             # 건강 습관 기록 화면
+│           │   ├── MedicationFragment.kt        # 약 복용 기록 화면
+│           │   ├── AlarmReceiver.kt             # 알림 수신 처리
+│           │   ├── CalendarAdapter.kt           # 캘린더 UI 어댑터
+│           │   ├── AlarmLogAdapter.kt           # 알람 기록 리스트 어댑터
+│           │   ├── MedAdapter.kt                # 약 리스트 어댑터
+│           │   ├── RecordDetailBottomSheet.kt   # 복용 기록 상세 보기
+│           │   └── MainActivity.kt              # 앱 메인 진입 포인트
+│           └── res/
+│               ├── layout/                      # XML 레이아웃 파일
+│               ├── drawable/                    # 이미지 및 벡터 자원
+│               ├── menu/                        # 하단 네비게이션 메뉴 정의
+│               ├── navigation/                  # 네비게이션 그래프 (선택적)
+│               ├── values/                      # 색상, 문자열 등 자원 정의
+│               └── xml/                         # 기타 설정 리소스
+├── build.gradle.kts                             # Gradle 설정 파일
+├── proguard-rules.pro                           # 코드 난독화 예외 설정
+└── AndroidManifest.xml                          # 앱 구성 정의
+```
 ---
 
 ## 앱 실행 화면
